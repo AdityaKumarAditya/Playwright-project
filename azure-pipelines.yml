@@ -1,0 +1,24 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - master  # Runs on changes to the master branch
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'  # Specify Node.js version
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npx playwright install
+    npx playwright test
+  displayName: 'Run Playwright Tests'
