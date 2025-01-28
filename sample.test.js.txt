@@ -1,0 +1,16 @@
+const { test, expect, chromium } = require('@playwright/test');
+
+test('Dropdown Validation and Work Email Field Interaction', async ({ page }) => {
+  // Step 1: Launch Chrome browser
+  const chrome = await chromium.launch({ headless: false });  // headless: false allows you to see the browser, change it to true if you want headless
+  const chromePage = await chrome.newPage();
+  
+  // Maximize the browser window
+  await chromePage.setViewportSize({
+    width: screen.width,  // Automatically adjusts to screen width
+    height: screen.height  // Automatically adjusts to screen height
+  });
+
+  // Step 2: Open the sign-up page
+  await chromePage.goto('https://app.circula.com/users/sign_up');
+});

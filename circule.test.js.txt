@@ -1,0 +1,40 @@
+// Import necessary modules from Playwright Test
+const { test, expect } = require('@playwright/test');
+
+// Define the test
+test('Sign-Up Page Dropdown Validation', async ({ page, browser }) => {
+  // Section 1: Verify Page Load and Dropdown Design
+  await page.goto('https://circula-qa-challenge.vercel.app/users/sign_up');
+  await expect(page).toHaveTitle(/Sign Up/); // Ensure the page title contains 'Sign Up'
+  const dropdown = page.locator('select[name="company_country"]');
+  await expect(dropdown).toBeVisible(); // Check if the dropdown is visible
+  // Additional design checks can be added here (e.g., CSS properties)
+
+  // Section 2: Dropdown Behavior
+  await dropdown.click(); // Open the dropdown
+  await expect(dropdown).toBeFocused(); // Ensure the dropdown is focused
+  // Additional behavior checks can be added here
+
+  // Section 3: "Sweden" Validation
+  const options = dropdown.locator('option');
+  const swedenOption = options.filter({ hasText: 'Sweden' });
+  await expect(swedenOption).toHaveCount(1); // Ensure 'Sweden' is present
+
+  // Section 4: Selection Functionality
+  await dropdown.selectOption({ label: 'Sweden' });
+  await expect(dropdown).toHaveValue('SE'); // Assuming 'SE' is the value for Sweden
+  // Additional checks can be added here to verify the selection is saved/displayed correctly
+
+  // Section 5: Browser Validation (Optional)
+  // This test will run in the default browser context. To run in Firefox:
+  const firefox = await browser.firefox.launch();
+  const firefoxPage = await firefox.newPage();
+  await firefoxPage.goto('https://circula-qa-challenge.vercel.app/users/sign_up');
+  // Repeat the above checks for Firefox
+  await firefox.close();
+
+  // Section 6: Error Handling
+  // Simulate scenarios where the dropdown might fail to load
+  // For example, intercept network requests to mock a failure
+  // This requires advanced setup and is optional
+});
